@@ -1,0 +1,16 @@
+Final project: generating problems
+1. Holiday sales
+Is there increased ridership during holiday season? 
+If not, how can we improve ridership during this time?
+
+External datasets we can use:
+  Travel to and away from DC to estimate the population at the time
+  Metro travel in DC during the holiday season to compare with (does the overall travel go down or up?)
+  
+Generating a solution: Look at other transportation companies, what did they do over the holidays to raise the ridership? Can we apply those to this?
+
+2. Improving ridership but using the holiday data:
+  - Holiday data shows tourists and not locals (since most probably use the program to commute to and from work, holiday season means no work and people tend to stay home with family around Christmas time), how do tourists affect the ridership program?
+  - We can use the data from this and other holidays to see how much tourist affect bikeshare sales
+  - Then we can generate something to help increase usage of bikes for tourists.
+  
