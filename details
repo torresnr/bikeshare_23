@@ -16,3 +16,9 @@ Generating a solution: Look at other transportation companies, what did they do 
   - We can use the data from this and other holidays to see how much tourist affect bikeshare sales
   - Then we can generate something to help increase usage of bikes for tourists.
   
+What we want: Improve overall money in by taking advantage of tourists during holiday seasons. 
+- Identify when tourists come the most (holiday season)
+- Identify hotspots for tourists and compare if there is public transport to that location or if there is a bikestation there
+- Identify the usage of those locations during different seasons (non tourist seasons and tourist seasons)
+- Find car rentals to see how much that affects tourists using the bikeshare program (is it worth it to put more stations?)
+- Generate ideas for where to put more stations/what to do to increase tourist ridership
