@@ -1,0 +1,312 @@
+---
+title: "2022 Bikeshare Data Analysis Project"
+author: "Group Project"
+date: "2023-12-08"
+output: html_notebook
+---
+
+Packages
+
+```{r}
+library(tidyverse)
+library(here)
+library(janitor)
+library(tmap)
+library(sf)
+library(ggplot2)
+library(plotly)
+```
+
+We will begin creating data frames for every month's Bikeshare .zip file for year 2020.
+
+```{r}
+dfJan20 = read_csv(here("data_raw",
+                    "202001-capitalbikeshare-tripdata.zip"))
+
+dfFeb20 = read_csv(here("data_raw",
+                    "202002-capitalbikeshare-tripdata.zip"))
+
+dfMar20 = read_csv(here("data_raw",
+                    "202003-capitalbikeshare-tripdata.zip"))
+
+dfApr20 = read_csv(here("data_raw",
+                    "202004-capitalbikeshare-tripdata.zip"))
+
+dfMay20 = read_csv(here("data_raw",
+                    "202005-capitalbikeshare-tripdata.zip"))
+
+dfJun20 = read_csv(here("data_raw",
+                    "202006-capitalbikeshare-tripdata.zip"))
+
+dfJul20 = read_csv(here("data_raw",
+                    "202007-capitalbikeshare-tripdata.zip"))
+
+dfAug20 = read_csv(here("data_raw",
+                    "202008-capitalbikeshare-tripdata.zip"))
+
+dfSep20 = read_csv(here("data_raw",
+                    "202009-capitalbikeshare-tripdata.zip"))
+
+dfOct20 = read_csv(here("data_raw",
+                    "202010-capitalbikeshare-tripdata.zip"))
+
+dfNov20 = read_csv(here("data_raw",
+                    "202011-capitalbikeshare-tripdata.zip"))
+
+dfDec20 = read_csv(here("data_raw",
+                    "202012-capitalbikeshare-tripdata.zip"))
+```
+
+We will then create data frames for every month's Bikeshare .zip file for year 2022.
+
+```{r}
+dfJan22 = read_csv(here("data_raw",
+                    "202201-capitalbikeshare-tripdata.zip"))
+
+dfFeb22 = read_csv(here("data_raw",
+                    "202202-capitalbikeshare-tripdata.zip"))
+
+dfMar22 = read_csv(here("data_raw",
+                    "202203-capitalbikeshare-tripdata.zip"))
+
+dfApr22 = read_csv(here("data_raw",
+                    "202204-capitalbikeshare-tripdata.zip"))
+
+dfMay22 = read_csv(here("data_raw",
+                    "202205-capitalbikeshare-tripdata.zip"))
+
+dfJun22 = read_csv(here("data_raw",
+                    "202206-capitalbikeshare-tripdata.zip"))
+
+dfJul22 = read_csv(here("data_raw",
+                    "202207-capitalbikeshare-tripdata.zip"))
+
+dfAug22 = read_csv(here("data_raw",
+                    "202208-capitalbikeshare-tripdata.zip"))
+
+dfSep22 = read_csv(here("data_raw",
+                    "202209-capitalbikeshare-tripdata.zip"))
+
+dfOct22 = read_csv(here("data_raw",
+                    "202210-capitalbikeshare-tripdata.zip"))
+
+dfNov22 = read_csv(here("data_raw",
+                    "202211-capitalbikeshare-tripdata.zip"))
+
+dfDec22 = read_csv(here("data_raw",
+                    "202212-capitalbikeshare-tripdata.zip"))
+
+```
+
+Now, we will combine all of the data frames into yearly data frames for years 2020 and 2022.
+```{r}
+dfJan20$`End station number` = as.numeric(dfJan20$`End station number`)
+dfAll20 = bind_rows(dfJan20, dfFeb20, dfMar20, dfApr20, dfMay20, dfJun20, dfJul20, dfAug20, dfSep20, dfOct20, dfNov20, dfDec20)
+```
+
+```{r}
+dfAll22 = bind_rows(dfJan22, dfFeb22, dfMar22, dfApr22, dfMay22, dfJun22, dfJul22, dfAug22, dfSep22, dfOct22, dfNov22, dfDec22)
+```
+
+Now, we will create a visualization for each yearly data frame, years 2020 and 2022.
+
+```{r}
+dfAll20Start = dfAll20 %>% 
+  select(rideable_type,
+         member_casual,
+         contains("start"),
+         ride_id) %>% 
+  mutate(start_stop = "start") %>%
+  rename(t = started_at,
+         station_name = start_station_name,
+         station_id = start_station_id,
+         lat = start_lat,
+         lng = start_lng)
+
+dfAll20End = dfAll20 %>% 
+  select(ride_id,
+         rideable_type,
+         member_casual,
+         contains("end")) %>%
+  mutate(start_stop = "stop") %>%
+  rename(t = ended_at,
+         station_name = end_station_name,
+         station_id = end_station_id,
+         lat = end_lat,
+         lng = end_lng)
+ 
+dfAll20Riders = bind_rows(dfAll20Start,
+                dfAll20End) %>%
+  arrange(t) %>%
+  mutate(rider_delta = (start_stop == "start") * 2 - 1) %>% # change in ridership 
+  mutate(riders = cumsum(rider_delta)) %>%
+  relocate(riders, .after = t)
+```
+
+THIS GRAPH IS NOT WORKING:
+
+```{r}
+dfAll20Riders %>% 
+  ggplot(aes(t, riders)) +
+  geom_line()
+```
+
+```{r}
+dfAll22Start = dfAll22 %>% 
+  select(rideable_type,
+         member_casual,
+         contains("start"),
+         ride_id) %>% 
+  mutate(start_stop = "start") %>%
+  rename(t = started_at,
+         station_name = start_station_name,
+         station_id = start_station_id,
+         lat = start_lat,
+         lng = start_lng)
+
+dfAll22End = dfAll22 %>% 
+  select(ride_id,
+         rideable_type,
+         member_casual,
+         contains("end")) %>%
+  mutate(start_stop = "stop") %>%
+  rename(t = ended_at,
+         station_name = end_station_name,
+         station_id = end_station_id,
+         lat = end_lat,
+         lng = end_lng)
+ 
+dfAll22Riders = bind_rows(dfAll22Start,
+                dfAll22End) %>%
+  arrange(t) %>%
+  mutate(rider_delta = (start_stop == "start") * 2 - 1) %>% # change in ridership 
+  mutate(riders = cumsum(rider_delta)) %>%
+  relocate(riders, .after = t)
+```
+
+```{r}
+dfAll22Riders %>% 
+  ggplot(aes(t, riders)) +
+  geom_line()
+```
+
+Month by Month, 2020 (MONTHS unfinished/unedited)
+
+```{r}
+dfJanStart = dfJan %>% 
+  select(rideable_type,
+         member_casual,
+         contains("start"),
+         ride_id) %>% 
+  mutate(start_stop = "start") %>%
+  rename(t = started_at,
+         station_name = start_station_name,
+         station_id = start_station_id,
+         lat = start_lat,
+         lng = start_lng)
+
+dfJanEnd = dfJan %>% 
+  select(ride_id,
+         rideable_type,
+         member_casual,
+         contains("end")) %>%
+  mutate(start_stop = "stop") %>%
+  rename(t = ended_at,
+         station_name = end_station_name,
+         station_id = end_station_id,
+         lat = end_lat,
+         lng = end_lng)
+ 
+dfJanRiders = bind_rows(dfJanStart,
+                dfJanEnd) %>%
+  arrange(t) %>%
+  mutate(rider_delta = (start_stop == "start") * 2 - 1) %>% # change in ridership 
+  mutate(riders = cumsum(rider_delta)) %>%
+  relocate(riders, .after = t)
+```
+
+```{r}
+dfJanRiders %>% 
+  ggplot(aes(t, riders)) +
+  geom_line()
+```
+
+```{r}
+dfFebStart = dfFeb %>% 
+  select(rideable_type,
+         member_casual,
+         contains("start"),
+         ride_id) %>% 
+  mutate(start_stop = "start") %>%
+  rename(t = started_at,
+         station_name = start_station_name,
+         station_id = start_station_id,
+         lat = start_lat,
+         lng = start_lng)
+
+dfFebEnd = dfFeb %>% 
+  select(ride_id,
+         rideable_type,
+         member_casual,
+         contains("end")) %>%
+  mutate(start_stop = "stop") %>%
+  rename(t = ended_at,
+         station_name = end_station_name,
+         station_id = end_station_id,
+         lat = end_lat,
+         lng = end_lng)
+ 
+dfFebRiders = bind_rows(dfFebStart,
+                dfFebEnd) %>%
+  arrange(t) %>%
+  mutate(rider_delta = (start_stop == "start") * 2 - 1) %>% # change in ridership 
+  mutate(riders = cumsum(rider_delta)) %>%
+  relocate(riders, .after = t)
+```
+
+```{r}
+dfFebRiders %>% 
+  ggplot(aes(t, riders)) +
+  geom_line()
+```
+
+
+```{r}
+dfDecStart = dfDec %>% 
+  select(rideable_type,
+         member_casual,
+         contains("start"),
+         ride_id) %>% 
+  mutate(start_stop = "start") %>%
+  rename(t = started_at,
+         station_name = start_station_name,
+         station_id = start_station_id,
+         lat = start_lat,
+         lng = start_lng)
+
+dfDecEnd = dfDec %>% 
+  select(ride_id,
+         rideable_type,
+         member_casual,
+         contains("end")) %>%
+  mutate(start_stop = "stop") %>%
+  rename(t = ended_at,
+         station_name = end_station_name,
+         station_id = end_station_id,
+         lat = end_lat,
+         lng = end_lng)
+ 
+dfDecRiders = bind_rows(dfDecStart,
+                dfDecEnd) %>%
+  arrange(t) %>%
+  mutate(rider_delta = (start_stop == "start") * 2 - 1) %>% # change in ridership 
+  mutate(riders = cumsum(rider_delta)) %>%
+  relocate(riders, .after = t)
+```
+
+```{r}
+dfDecRiders %>% 
+  ggplot(aes(t, riders)) +
+  geom_line()
+```
+
