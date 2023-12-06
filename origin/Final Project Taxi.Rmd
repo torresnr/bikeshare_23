@@ -1,0 +1,94 @@
+---
+title: "2022 Bikeshare Data Analysis Project, Taxi"
+author: "Group Project"
+date: "2023-12-08"
+output: html_notebook
+---
+
+Packages
+
+```{r}
+library(tidyverse)
+library(here)
+library(janitor)
+library(tmap)
+library(sf)
+library(ggplot2)
+library(plotly)
+```
+
+We will begin creating data frames for every month's Bikeshare .zip file for year 2020. We are excluding January, Feb., and March because the data is broken from the source.
+
+```{r}
+dfApr20 = read_csv(here("data_raw",
+                    "taxi_2020_04.zip"))
+
+dfMay20 = read_csv(here("data_raw",
+                    "taxi_2020_05.zip"))
+
+dfJun20 = read_csv(here("data_raw",
+                    "taxi_2020_06.zip"))
+
+dfJul20 = read_csv(here("data_raw",
+                    "taxi_2020_07.zip"))
+
+dfAug20 = read_csv(here("data_raw",
+                    "taxi_2020_08.zip"))
+
+dfSep20 = read_csv(here("data_raw",
+                    "taxi_2020_09.zip"))
+
+dfOct20 = read_csv(here("data_raw",
+                    "taxi_2020_10.zip"))
+
+dfNov20 = read_csv(here("data_raw",
+                    "taxi_2020_11.zip"))
+
+dfDec20 = read_csv(here("data_raw",
+                    "taxi_2020_12.zip"))
+```
+
+We will then create data frames for every month's Taxi .zip file for year 2022. We are excluding Jan., Feb., and March 2022, since we are also excluding them from 2020.
+
+```{r}
+dfApr22 = read_csv(here("data_raw",
+                    "taxi_202204.zip"))
+
+dfMay22 = read_csv(here("data_raw",
+                   "taxi_202205.zip"))
+
+dfJun22 = read_csv(here("data_raw",
+                    "taxi_202206.zip"))
+
+dfJul22 = read_csv(here("data_raw",
+                    "taxi_202207.zip"))
+
+dfAug22 = read_csv(here("data_raw",
+                    "taxi_202208.zip"))
+
+dfSep22 = read_csv(here("data_raw",
+                   "taxi_202209.zip"))
+
+dfOct22 = read_csv(here("data_raw",
+                   "taxi_202210.zip"))
+
+dfNov22 = read_csv(here("data_raw",
+                    "taxi_202211.zip"))
+
+dfDec22 = read_csv(here("data_raw",
+                   "taxi_202211.zip"))
+
+```
+
+Now, we will combine all of the data frames into yearly data frames for years 2020 and 2022.
+
+```{r}
+dfAll20 = bind_rows(dfApr20, dfMay20, dfJun20, dfJul20, dfAug20, dfSep20, dfOct20, dfNov20, dfDec20)
+```
+
+```{r}
+dfAll22 = bind_rows(dfApr22, dfMay22, dfJun22, dfJul22, dfAug22, dfSep22, dfOct22, dfNov22, dfDec22)
+```
+
+Now, we will create a visualization for each yearly data frame, years 2020 and 2022.
+
