@@ -123,15 +123,7 @@ dfAll20Riders = bind_rows(dfAll20Start,
   mutate(rider_delta = (start_stop == "start") *1) %>% # change in ridership 
   mutate(riders = cumsum(rider_delta)) %>%
   relocate(riders, .after = t)
-```
 
-
-```{r}
-Fig20<- plot_ly(data = dfAll20Riders, x = ~t) |> add_trace(y = ~riders, name = 'Ridership', mode = 'lines')
-Fig20
-```
-
-```{r}
 dfAll22Start = dfAll22 %>% 
   select(rideable_type,
          member_casual,
@@ -165,8 +157,24 @@ dfAll22Riders = bind_rows(dfAll22Start,
 ```
 
 ```{r}
+Fig20<- plot_ly(data = dfAll20Riders, x = ~t) |> add_trace(y = ~riders, name = 'Ridership', mode = 'lines')
+#Fig20
+
 Fig22<- plot_ly(data = dfAll22Riders, x = ~t) |> add_trace(y = ~riders, name = 'Ridership', mode = 'lines')
-Fig22
+#Fig22
 ```
 
+Derivative plot: How much riders change over time
 
+```{r}
+original20 <- data.frame(X = dfAll20Riders$t, Y = dfAll20Riders$riders, type = "Original")
+original20<- original20[-1,]
+diffx <- diff(dfAll20Riders$t)
+diffx<- as.numeric(diffx)
+diffy <- diff(dfAll20Riders$riders)
+ridersdiff = diffy/diffx
+
+do20<- original20 |> mutate(ridersDiff = ridersdiff)
+
+ggplot(do20, aes(x=X)) + geom_point(aes(y= Y), color = "black") + geom_point(aes(y=ridersdiff), color = "darkred") 
+```
