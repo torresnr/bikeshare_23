@@ -11,9 +11,9 @@ Packages
 library(tidyverse)
 library(here)
 library(janitor)
+library(ggplot2)
 library(tmap)
 library(sf)
-library(ggplot2)
 library(plotly)
 ```
 
@@ -92,9 +92,28 @@ dfAll22 = bind_rows(dfApr22, dfMay22, dfJun22, dfJul22, dfAug22, dfSep22, dfOct2
 
 Now, we will create a visualization for each yearly data frame, years 2020 and 2022.
 
+create user_data column
+2020 graph
 ```{r}
 dfAll20Users = dfAll20 |>
   mutate(users_delta = (MILEAGE != 0)*1) |>
   mutate(user = cumsum(users_delta))
-dfAll20Users = dfAll20Users |> rename(t = ORIGINDATETIME_TR)
+dfAll20Users = dfAll20Users |> 
+  rename(r = user,
+    t = ORIGINDATETIME_TR)
+dfAll20Users %>% 
+  ggplot(aes(t, r)) +
+  geom_line()
+```
+2022 graph
+```{r}
+dfAll22Users = dfAll22 |>
+  mutate(users_delta = (MILEAGE != 0)*1) |>
+  mutate(user = cumsum(users_delta))
+dfAll22Users = dfAll22Users |> 
+  rename(r = user,
+    t = ORIGINDATETIME_TR)
+dfAll22Users %>% 
+  ggplot(aes(t, r)) +
+  geom_line()
 ```
