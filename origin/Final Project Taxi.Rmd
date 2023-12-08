@@ -92,3 +92,9 @@ dfAll22 = bind_rows(dfApr22, dfMay22, dfJun22, dfJul22, dfAug22, dfSep22, dfOct2
 
 Now, we will create a visualization for each yearly data frame, years 2020 and 2022.
 
+```{r}
+dfAll20Users = dfAll20 |>
+  mutate(users_delta = (MILEAGE != 0)*1) |>
+  mutate(user = cumsum(users_delta))
+dfAll20Users = dfAll20Users |> rename(t = ORIGINDATETIME_TR)
+```
