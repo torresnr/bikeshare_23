@@ -178,3 +178,16 @@ do20<- original20 |> mutate(ridersDiff = ridersdiff)
 
 ggplot(do20, aes(x=X)) + geom_point(aes(y= Y), color = "black") + geom_point(aes(y=ridersdiff), color = "darkred") 
 ```
+
+```{r}
+original22 <- data.frame(X = dfAll22Riders$t, Y = dfAll22Riders$riders, type = "Original")
+original22<- original22[-1,]
+diffx <- diff(dfAll22Riders$t)
+diffx<- as.numeric(diffx)
+diffy <- diff(dfAll22Riders$riders)
+ridersdiff = diffy/diffx
+
+do22<- original22 |> mutate(ridersDiff = ridersdiff)
+
+ggplot(do22, aes(x=X)) + geom_point(aes(y= Y), color = "black") + geom_point(aes(y=ridersdiff), color = "darkblue") 
+```
