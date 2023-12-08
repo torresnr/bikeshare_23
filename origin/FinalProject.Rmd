@@ -159,15 +159,14 @@ dfAll22End = dfAll22 %>%
 dfAll22Riders = bind_rows(dfAll22Start,
                 dfAll22End) %>%
   arrange(t) %>%
-  mutate(rider_delta = (start_stop == "start") * 2 - 1) %>% # change in ridership 
+  mutate(rider_delta = (start_stop == "start") *1) %>% # change in ridership 
   mutate(riders = cumsum(rider_delta)) %>%
   relocate(riders, .after = t)
 ```
 
 ```{r}
-dfAll22Riders %>% 
-  ggplot(aes(t, riders)) +
-  geom_line()
+Fig22<- plot_ly(data = dfAll22Riders, x = ~t) |> add_trace(y = ~riders, name = 'Ridership', mode = 'lines')
+Fig22
 ```
 
 
