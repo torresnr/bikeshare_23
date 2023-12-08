@@ -3,7 +3,8 @@ Our idea is to collect the bike share data and taxi rider data for the years 202
 
 While working with our data, we realized that the months January-March 2020 were missing the start times and end times for the bikes. Due to this complication and no way to add these times, we excluded January-March 2020 and January-March 2022 data from our graphs. We deemed this appropriate because, around April 2020, COVID-19 was strongly prevalent, which should be reflected in the data.
 
-We discovered that objectid does not refer to the number of passengers while working with taxi data.  We utilized mutate to construct a new column that calculates the number of taxi rides based on the mileage.  If the mileage is zero, no ride occurred. Below are the graphs for the 2020 and 2022 data files:
+We discovered that the variable objectid does not refer to the number of passengers while working with the taxi data. We utilized the function mutate to construct a new column that calculates the number of taxi rides based on mileage. If the mileage is zero, no ride occurred. Below are the graphs for the 2020 and 2022 data files:
+
 2020
 ![image](https://github.com/torresnr/bikeshare_23/assets/145371919/83adee53-382b-4930-83a0-b6472902d509)
 2022
